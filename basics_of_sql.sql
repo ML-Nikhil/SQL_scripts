@@ -33,7 +33,7 @@ select * from subjects;
 alter table faculty
 add primary key(faculty_id);
 alter table students
-add marks int;
+add marks int; -- add another column to students table
 /* ____________________ Dropping Tables ____________________ */
 
 drop table faculty; -- drop faculty table from schema
