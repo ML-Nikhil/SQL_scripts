@@ -183,3 +183,5 @@ where rental_duration >3
 group by rating
 order by count desc
 limit 2,1;
+
+/* ________________________________________________________________________________ */
