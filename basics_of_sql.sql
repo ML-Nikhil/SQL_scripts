@@ -143,3 +143,43 @@ from film
 group by rental_duration
 order by count desc
 limit 1; -- returns only top entry of result
+
+/* ___________________WHERE  and LIMIT clause__________________________ */
+select * from film;
+-- return count of films where rating is 6
+select rating,count(*)
+from film
+where rental_duration =6
+group by rating; 
+
+-- return count of films where rating is greater than 3 and sort descending
+select rating,count(*) as count
+from film
+where rental_duration >3
+group by rating
+order by count desc;
+
+-- return count of films where rating is greater than 3 and give only top 2 entries
+select rating,count(*) as count
+from film
+where rental_duration >3
+group by rating
+order by count desc
+limit 2;
+
+-- return count of films where rating is greater than 3 and give only top 2 entries skipping first one
+select rating,count(*) as count
+from film
+where rental_duration >3
+group by rating
+order by count desc
+limit 2
+offset 1;
+
+-- return count of films where rating is greater than 3 and give third largest entry
+select rating,count(*) as count
+from film
+where rental_duration >3
+group by rating
+order by count desc
+limit 2,1;
