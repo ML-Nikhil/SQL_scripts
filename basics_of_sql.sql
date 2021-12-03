@@ -185,3 +185,127 @@ order by count desc
 limit 2,1;
 
 /* ________________________________________________________________________________ */
+
+/* _________________ JOINS ________________________ */
+select * from store;
+select * from inventory;
+
+/* _________ ______ Inner JOIN _____________________*/
+
+select * from inventory as i
+inner join store as s
+on i.store_id = s.store_id;
+
+/* _____________ LEFT JOIN ___________*/
+
+select * from city;
+select * from country;
+
+select * from country 
+left join city
+on country.country_id = city.country_id;
+
+/* __________ Right Join _______ */
+select * from city 
+right join country
+on city.country_id = country.country_id;
+
+/* _____________ Full Join ________________ */
+select * from country 
+left join city
+on country.country_id = city.country_id
+union
+select * from city 
+right join country
+on city.country_id = country.country_id;
+
+select * from film as f
+inner join film_actor as fa
+on f.film_id = fa.film_id
+inner join actor as a
+on fa.actor_id = a.actor_id;
+
+/* Title followed by name of actor */
+select distinct title, concat(first_name,' ', last_name) as Name from film
+inner join film_actor fa
+on fa.film_id = film.film_id
+inner join actor a
+on fa.actor_id = a.actor_id;
+/* __________________________ SET THEORY __________________________ */
+-- Union select ___ from ___ union Select___ from ___ : distinct values
+-- Union all select ___ from ____ union all select____ from ___ : duplicate values 
+
+select * from film_actor limit 5;
+select * from actor limit 5;
+
+select actor_id from film_actor
+union
+select actor_id from actor
+order by actor_id asc
+limit 10;
+
+select actor_id from film_actor
+union all
+select actor_id from actor
+order by actor_id asc
+limit 10;
+
+/* _____________________________________________________________________ */
+
+select * from rental;
+select * from customer;
+
+select concat(first_name,' ',last_name) as Name,rental_date as date, year(rental_date) as Year, month(rental_date) as Month
+from customer c
+inner join rental r 
+on c.customer_id = r.customer_id
+where month(rental_date) = 5 and year(rental_date) = 2005;
+
+select distinct title , concat(first_name,' ', last_name) as actor from film
+inner join film_actor as fa
+on fa.film_id = film.film_id
+inner join actor as a
+on a.actor_id =  fa.actor_id;
+
+
+/* ______________ WILD CARDS _____________________ */
+-- LIKE operator with where clause
+-- WHERE Customer Name LIKE 'a%' Finds any values that starts with "a"
+-- WHERE Customer Name LIKE '%a' Finds any values that ends with "a"
+-- WHERE Customer Name LIKE '%or%' Finds any values that have "or" in any position
+-- WHERE Customer Name LIKE '_r%' Finds any values that have "r" in the second position
+-- WHERE Customer Name LIKE 'a %_%' Finds any values that starts with "a" and are at least 3 characters in length
+-- WHERE Contact Name LIKE 'a%o' Finds any values that starts with "a" and ends with "o"
+-- language is not case sensitive
+select title from film
+where title like 'K%'; -- films that starts with k
+
+select title from film
+where title like '%b'; -- films that ends  with b
+
+select title from film
+where title like 'ac%'; -- films stars with ac
+
+/*_________________ Regular Expression _________________ */
+
+select title from film
+where title regexp '^p'; -- returns titles starting with p
+
+select first_name, actor_id from actor
+where first_name regexp 'e$'; -- returns title ending with e
+
+select first_name, actor_id from actor
+where first_name regexp '[abcd]e'; -- returns title having ae,be,ce,de
+
+select first_name, actor_id from actor
+where first_name regexp '[p-z]e$'; -- returns title having combination of p to z with e at the end
+
+select first_name, actor_id from actor
+where first_name regexp '^[p-z]e'; -- returns title having combination of p to z with e at the start
+
+select first_name, actor_id from actor
+where first_name regexp '[l-p]e'; -- returns title having combination of l to p with e anywhere
+
+select first_name, actor_id from actor
+where first_name regexp 'e$' or '^p'; -- returns title starting with p or ending with e
+
